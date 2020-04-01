@@ -1,0 +1,41 @@
+<!-- This is a static file -->
+<!-- served from your routes in server.js -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Items management</title>
+    <meta name="description" content="Items management application">
+    <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+    
+    <!-- import the webpage's client-side javascript file -->
+    <script src="/client.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        Items management
+      </h1>
+    </header>
+
+    <main>
+	<p class="bold">Oh hi,</p>
+      
+	<p>Insert item:</p>
+      
+	<form>
+		key1: <input name="key1" type="text" maxlength="100" placeholder="Value 1" aria-labelledby="submit-dream">
+		key2: <input name="key2" type="text" maxlength="100" placeholder="Value 2" aria-labelledby="submit-dream">
+		<button type="submit" id="add-item">Add item</button>
+	</form>
+    </main>
+
+  </body>
+</html>
+
