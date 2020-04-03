@@ -41,7 +41,7 @@ const saveToDbFile = () => {
 var exists = fs.existsSync(dbFile);
 if (!exists) {
 	// initializing with a first item
-	items.push({id: 1, name: "Giuliano"});
+	items.push({key1: "first key", key2: "Giuliano"});
 
 	// store in db file
 	saveToDbFile();
@@ -86,8 +86,6 @@ app.get('/getItems', (request, response) => {
 
 // endpoint to insert a dream into the database
 app.post('/insertItems', (request, response) => {
-	console.log(request);
-
 	// thanks to the json middleware, we are able to parse the body, which includes the new dream
   	//const newItem = request.body.item;
 	const newItem = request.body;

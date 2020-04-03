@@ -62,14 +62,12 @@ const appendNewItem = (item) => {
 	const newDiv = document.createElement('div');
 
 	// Brutal way of converting object to text. Some work to do here. TODO
-	var itemText = JSON.stringify(item, null, '  ');
+	//var itemText = JSON.stringify(item, null, '  ');
 
-	// beware of XSS!
-	// https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
-	console.log(itemText);
-	var sanitizedItem = OWASPescape(itemText);
-	console.log(sanitizedItem);
-	newDiv.innerHTML = sanitizedItem;
+	// HTML table from array of objects
+	var itemText = JSON2HTML(item);
+
+	newDiv.innerHTML = itemText;
 
 	document.body.appendChild(newDiv);
 }
@@ -85,6 +83,19 @@ const insertItem = (item) => {
 	console.log(item);  
 
 	http.send(JSON.stringify(item));
+}
+
+const JSON2HTML = (item) => {
+	var txt = "";
+	txt += "<table border='1'>";
+	for (x in item) {
+		// beware of XSS!
+		// https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
+		//txt += "<tr><td>" + OWASPescape(x) + "</td><td>" + OWASPescape(item[x]) + "</td></tr>";
+		txt += "<tr><td>" + x + "</td><td>" + item[x] + "</td></tr>";
+	}
+	txt += "</table><br>" ;
+	return txt;
 }
 
 // listen for the form to be submitted and add a new item when it is
