@@ -8,9 +8,6 @@ let items = [];
 
 // define variables that reference elements on our page
 
-// unordered (bulleted) list
-//const dreamsList = document.getElementById('dreams');
-
 // form (including input text field and submit button)
 const itemForm = document.forms[0];
 
@@ -19,7 +16,7 @@ const key1 = itemForm.elements['key1'];
 const key2 = itemForm.elements['key2'];
 const secret = itemForm.elements['secret'];
 
-// a helper function to call when our request for dreams is done (callback triggered after the completion of the XMLHttpRequest)
+// a helper function to call when our request for items is done (callback triggered after the completion of the XMLHttpRequest)
 // cf DisplayRequest.onload = displayItems;
 const displayItems = function() {
 	// parse our response (from /getItems) to convert to JSON
@@ -137,7 +134,7 @@ itemForm.onsubmit = function(event) {
 	event.preventDefault();
 
 	// get item value and add it to the list
-	var item1 = {};				// IMPROVE
+	var item1 = {};
 	item1.key1 = key1.value;
 	item1.key2 = key2.value;
 
@@ -150,8 +147,8 @@ itemForm.onsubmit = function(event) {
 	apirequest.item = item1;
 	apirequest.secret = apisecret;
 
-	// call API to insert dream into the database
-	insertItem(apirequest);				// TODO check status
+	// call API to insert item into the database base
+	insertItem(apirequest);
 
 	// reset form
 	key1.value = '';

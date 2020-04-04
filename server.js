@@ -82,14 +82,14 @@ app.get('/', (request, response) => {
 	response.sendFile(__dirname + '/views/index.html');
 });
 
-// endpoint to get all the dreams in the database
+// endpoint to get all the items in the database
 app.get('/getItems', (request, response) => {
 	response.send(JSON.stringify(items));
 });
 
-// endpoint to insert a dream into the database
+// endpoint to insert an item into the database
 app.post('/insertItems', (request, response) => {
-	// thanks to the json middleware, we are able to parse the body, which includes the new dream
+	// thanks to the json middleware, we are able to parse the body, which includes the new item
 	const newItem = request.body.item;
 	const apisecret = request.body.secret;
 
