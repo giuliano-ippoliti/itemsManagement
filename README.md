@@ -7,7 +7,7 @@ git clone https://github.com/giuliano-ippoliti/itemsManagement.git
 
 npm install
 
-Edit .env file with PORT=<listen port>
+Set variables in .env file (PORT, SECRET) 
 
 npm start
 
