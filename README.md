@@ -1,5 +1,6 @@
 # itemsManagement
-Webapp for managin a collection of items, written for learning purposes (node.js, HTML, javascript, JSON, ...).
+Webapp for managing a collection of items (books, ...), written for learning purposes (node.js, HTML, javascript, JSON, ...).
+
 Not ready for prod yet.
 
 ## Localhost install
