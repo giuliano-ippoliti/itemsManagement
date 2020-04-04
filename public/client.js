@@ -89,7 +89,7 @@ const appendNewItem = (item) => {
 	//var itemText = JSON.stringify(item, null, '  ');
 
 	// HTML table from array of objects
-	var itemText = JSON2HTML(item);
+	var itemText = JSON2HTMLtext(item);
 
 	newDiv.innerHTML = itemText;
 
@@ -106,7 +106,7 @@ const insertItem = (apirequest) => {
 	InsertRequest.send(JSON.stringify(apirequest));
 }
 
-const JSON2HTML = (item) => {
+const JSON2HTMLtable = (item) => {
 	var txt = "";
 	txt += "<table border='1'>";
 	for (x in item) {
@@ -116,6 +116,18 @@ const JSON2HTML = (item) => {
 		txt += "<tr><td>" + x + "</td><td>" + item[x] + "</td></tr>";
 	}
 	txt += "</table><br>" ;
+	return txt;
+}
+
+const JSON2HTMLtext = (item) => {
+	var txt = "";
+	for (x in item) {
+		// beware of XSS!
+		// https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
+		//txt += "<tr><td>" + OWASPescape(x) + "</td><td>" + OWASPescape(item[x]) + "</td></tr>";
+		txt += "<b>" + x + "</b>: " + item[x] + "<br>";
+	}
+	txt += "<br>" ;
 	return txt;
 }
 
