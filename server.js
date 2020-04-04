@@ -18,6 +18,9 @@ dotenv.config();
 // DB as JSON file
 var fs = require('fs');
 
+//API KEY
+const SECRET = process.env.SECRET;
+
 // array of objects (items)
 var items = [];
 
@@ -28,7 +31,7 @@ const saveToDbFile = () => {
 	// converting to JSON for storing in db file
 	var initJsonStr = JSON.stringify(items, null, '  ');
 
-	console.log(initJsonStr);
+	//console.log(initJsonStr);
 
 	fs.writeFile(dbFile, initJsonStr, function(err) {
 		if (err) {
@@ -55,7 +58,7 @@ else {
 	// load items to items array
 	items = JSON.parse(contents);
 
-	console.log('Loaded: ', items);
+	//console.log('Loaded: ', items);
 }
 
 // Web application instance
@@ -87,17 +90,25 @@ app.get('/getItems', (request, response) => {
 // endpoint to insert a dream into the database
 app.post('/insertItems', (request, response) => {
 	// thanks to the json middleware, we are able to parse the body, which includes the new dream
-  	//const newItem = request.body.item;
-	const newItem = request.body;
-  
-	// add new item to items array
-	items.push(newItem);
+	const newItem = request.body.item;
+	const apisecret = request.body.secret;
 
-	// save to db file
-	saveToDbFile();
+	if (apisecret == SECRET) {
+		console.log('API key is ok, authentication succeded');
 
-	// send response
-	response.send(JSON.stringify(newItem));
+		// add new item to items array
+		items.push(newItem);
+
+		// save to db file
+		saveToDbFile();
+
+		// send response
+		response.send(JSON.stringify(newItem));
+	}
+	else {
+		console.log('API key is NOT ok, authentication failed');
+		response.sendStatus(403);
+	}
 });
 
 // listen for requests

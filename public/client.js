@@ -17,15 +17,18 @@ const itemForm = document.forms[0];
 // input text fields
 const key1 = itemForm.elements['key1'];
 const key2 = itemForm.elements['key2'];
+const secret = itemForm.elements['secret'];
 
 // a helper function to call when our request for dreams is done (callback triggered after the completion of the XMLHttpRequest)
-// cf itemsRequest.onload = getItemsListener;
-const getItemsListener = function() {
+// cf DisplayRequest.onload = displayItems;
+const displayItems = function() {
 	// parse our response (from /getItems) to convert to JSON
 
-  // this: XMLHttpRequest to /getDreams
-  // the response property is text : [{"dream":"Find and count some sheep"}, ... ]
-  // dreams is an array of objects : [0] -> { dream: "Find and count some sheep" }, ...
+	//check status
+	//console.log('status:', this.status);
+
+	// this: XMLHttpRequest to /getItems
+	// items is an array of objects
 	items = JSON.parse(this.response);
 
   	// iterate through every item and add it to our page
@@ -34,30 +37,51 @@ const getItemsListener = function() {
   	});
 }
 
+const displayInsertedItem = function() {
+	// parse our response (from /insertItems) to convert to JSON
+	console.log(this.status);
+	
+	//check status
+	if (this.status == 200) {
+		// this: XMLHttpRequest to /getItems
+		// items is an array of objects
+		item = JSON.parse(this.response);
+
+	  	// display inserted item
+		appendNewItem(item);
+	}
+	else {
+		alert('Invalid secret');
+	}
+
+}
+
 // request the items from our app's JSON database
 
 // Use XMLHttpRequest (XHR) objects to interact with servers
-const itemsRequest = new XMLHttpRequest();
+const DisplayRequest = new XMLHttpRequest();
+const InsertRequest = new XMLHttpRequest();
 
 // XMLHttpRequest.onload = callback;
 // callback is the function to be executed when the request completes successfully.
 // The value of this (i.e. the context) is the same XMLHttpRequest this callback is related to.
-itemsRequest.onload = getItemsListener;
+DisplayRequest.onload = displayItems;
+InsertRequest.onload = displayInsertedItem;
 
 // XMLHttpRequest.open(method, url[, async[, user[, password]]])
-itemsRequest.open('get', '/getItems');
+DisplayRequest.open('get', '/getItems');
 
 // send the request to the server.
 // If the request is asynchronous (which is the default), this method returns as soon as the request is sent
 // and the result is delivered using events (cf: onload)
-itemsRequest.send();
+DisplayRequest.send();
 
 // OWASP : Except for alphanumeric characters, escape all characters with ASCII values less than 256 with the &#xHH; format (or a named entity if available) to prevent switching out of the attribute.
 const OWASPescape = (str) => {
 	return str.replace(/[%*+,-/;<=>^|]/g, '-');
 } 
 
-// a helper function that creates a list item for a given dream
+// a helper function that displays a new item
 const appendNewItem = (item) => {
 	const newDiv = document.createElement('div');
 
@@ -73,16 +97,13 @@ const appendNewItem = (item) => {
 }
 
 // function that inserts an item into the database file
-const insertItem = (item) => {
-	const http = new XMLHttpRequest();
+const insertItem = (apirequest) => {
 	const url = '/insertItems';
 
-	http.open("POST", url);
-	http.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	InsertRequest.open("POST", url);
+	InsertRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-	console.log(item);  
-
-	http.send(JSON.stringify(item));
+	InsertRequest.send(JSON.stringify(apirequest));
 }
 
 const JSON2HTML = (item) => {
@@ -107,16 +128,23 @@ itemForm.onsubmit = function(event) {
 	var item1 = {};				// IMPROVE
 	item1.key1 = key1.value;
 	item1.key2 = key2.value;
-	items.push(item1);			// TODO
-	appendNewItem(item1);
+
+	// non, ça on ne devrait le faire qu'une fois la réponse validée !
+	//appendNewItem(item1);
+
+	var apisecret = secret.value;
+
+	var apirequest = {};
+	apirequest.item = item1;
+	apirequest.secret = apisecret;
 
 	// call API to insert dream into the database
-	insertItem(item1);
+	insertItem(apirequest);				// TODO check status
 
 	// reset form
 	key1.value = '';
 	key1.focus();
 	key2.value = '';
-	key2.focus();
+	secret.value = '';
 };
 
