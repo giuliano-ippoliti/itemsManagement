@@ -1,6 +1,6 @@
 {
   "name": "itemsmanage",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Wepapp for managing a collection of items",
   "main": "server.js",
   "directories": {

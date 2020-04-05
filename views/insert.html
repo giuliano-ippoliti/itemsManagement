@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/style.css">
     
     <!-- import the webpage's client-side javascript file -->
-    <script src="/display.js" defer></script>
+    <script src="/insert.js" defer></script>
   </head>
   <body>
     <header>
@@ -24,10 +24,19 @@
       </h1>
     </header>
 
-    <main> 
-	<a href="/insert">Insert item</a>
+    <main>
+	<p class="bold">Oh hi,</p>
+      
+	<p>Insert item:</p>
+      
+	<form>
+		key1: <input name="key1" type="text" maxlength="100" placeholder="Value 1">
+		key2: <input name="key2" type="text" maxlength="100" placeholder="Value 2">
+		secret: <input name="secret" type="password" maxlength="100">
+		<button type="submit" id="add-item">Add item</button>
+	</form>
 	<br>
-	<p class="bold">Items list</p>
+	<a href="/">Back</a>
     </main>
 
   </body>

@@ -82,6 +82,10 @@ app.get('/', (request, response) => {
 	response.sendFile(__dirname + '/views/index.html');
 });
 
+app.get('/insert', (request, response) => {
+	response.sendFile(__dirname + '/views/insert.html');
+});
+
 // endpoint to get all the items in the database
 app.get('/getItems', (request, response) => {
 	response.send(JSON.stringify(items));

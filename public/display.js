@@ -1,20 +1,10 @@
 // client-side js
 // run by the browser each time your view template referencing it is loaded
 
-console.log('client.js loading...');
+console.log('display.js loading...');
 
 // Start with an empty array
 let items = [];
-
-// define variables that reference elements on our page
-
-// form (including input text field and submit button)
-const itemForm = document.forms[0];
-
-// input text fields
-const key1 = itemForm.elements['key1'];
-const key2 = itemForm.elements['key2'];
-const secret = itemForm.elements['secret'];
 
 // a helper function to call when our request for items is done (callback triggered after the completion of the XMLHttpRequest)
 // cf DisplayRequest.onload = displayItems;
@@ -34,36 +24,15 @@ const displayItems = function() {
   	});
 }
 
-const displayInsertedItem = function() {
-	// parse our response (from /insertItems) to convert to JSON
-	console.log(this.status);
-	
-	//check status
-	if (this.status == 200) {
-		// this: XMLHttpRequest to /getItems
-		// items is an array of objects
-		item = JSON.parse(this.response);
-
-	  	// display inserted item
-		appendNewItem(item);
-	}
-	else {
-		alert('Invalid secret');
-	}
-
-}
-
 // request the items from our app's JSON database
 
 // Use XMLHttpRequest (XHR) objects to interact with servers
 const DisplayRequest = new XMLHttpRequest();
-const InsertRequest = new XMLHttpRequest();
 
 // XMLHttpRequest.onload = callback;
 // callback is the function to be executed when the request completes successfully.
 // The value of this (i.e. the context) is the same XMLHttpRequest this callback is related to.
 DisplayRequest.onload = displayItems;
-InsertRequest.onload = displayInsertedItem;
 
 // XMLHttpRequest.open(method, url[, async[, user[, password]]])
 DisplayRequest.open('get', '/getItems');
@@ -93,16 +62,6 @@ const appendNewItem = (item) => {
 	document.body.appendChild(newDiv);
 }
 
-// function that inserts an item into the database file
-const insertItem = (apirequest) => {
-	const url = '/insertItems';
-
-	InsertRequest.open("POST", url);
-	InsertRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-
-	InsertRequest.send(JSON.stringify(apirequest));
-}
-
 const JSON2HTMLtable = (item) => {
 	var txt = "";
 	txt += "<table border='1'>";
@@ -127,33 +86,3 @@ const JSON2HTMLtext = (item) => {
 	txt += "<br>" ;
 	return txt;
 }
-
-// listen for the form to be submitted and add a new item when it is
-itemForm.onsubmit = function(event) {
-	// stop our form submission from refreshing the page
-	event.preventDefault();
-
-	// get item value and add it to the list
-	var item1 = {};
-	item1.key1 = key1.value;
-	item1.key2 = key2.value;
-
-	// non, ça on ne devrait le faire qu'une fois la réponse validée !
-	//appendNewItem(item1);
-
-	var apisecret = secret.value;
-
-	var apirequest = {};
-	apirequest.item = item1;
-	apirequest.secret = apisecret;
-
-	// call API to insert item into the database base
-	insertItem(apirequest);
-
-	// reset form
-	key1.value = '';
-	key1.focus();
-	key2.value = '';
-	secret.value = '';
-};
-
