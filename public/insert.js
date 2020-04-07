@@ -47,11 +47,17 @@ const displayInfo = function() {
 
 	// create inputs
 	properties.forEach( (item) => {
+		var label = document.createTextNode(item);
+		itemForm.appendChild(label);
+
 		var input = document.createElement("input");
 		input.type = "text";
 		input.name = item;
 		itemForm.appendChild(input);
 	});
+
+	var secretlabel = document.createTextNode("Secret");
+	itemForm.appendChild(secretlabel);
 	secret = document.createElement("input");
 	secret.type = "password";
 	secret.name = "secret";
