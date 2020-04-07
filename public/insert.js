@@ -3,15 +3,18 @@
 
 console.log('insert.js loading...');
 
+// name and properties of the collection (from /getCollectionInfo)
+var name = "";
+var properties = [];
+
 // define variables that reference elements on our page
 
 // form (including input text field and submit button)
+const formDiv = document.getElementById("properties");
 const itemForm = document.forms[0];
 
-// input text fields
-const key1 = itemForm.elements['key1'];
-const key2 = itemForm.elements['key2'];
-const secret = itemForm.elements['secret'];
+var secret = itemForm.elements['secret'];
+//const secret = itemForm.elements['secret'];
 
 const checkInsertedItem = function() {
 	// parse our response (from /insertItems) to convert to JSON
@@ -29,9 +32,46 @@ const checkInsertedItem = function() {
 }
 
 // Use XMLHttpRequest (XHR) objects to interact with servers
+const GetInfoRequest = new XMLHttpRequest();
 const InsertRequest = new XMLHttpRequest();
 
+const displayInfo = function() {
+	// parse our response (from /getCollectionInfo) to convert to JSON
+	var info = JSON.parse(this.response);
+
+	name = info.name;
+	properties = info.properties;
+
+	console.log(name);
+	console.log(properties);
+
+	// create inputs
+	properties.forEach( (item) => {
+		var input = document.createElement("input");
+		input.type = "text";
+		input.name = item;
+		itemForm.appendChild(input);
+	});
+	secret = document.createElement("input");
+	secret.type = "password";
+	secret.name = "secret";
+	itemForm.appendChild(secret);
+
+	//create button
+	var button = document.createElement("button");
+	button.type = "submit";
+	button.innerHTML = "Add item";
+	itemForm.appendChild(button);
+	//<button type="submit" id="add-item">Add item</button>
+}
+
+GetInfoRequest.onload = displayInfo;
+
 InsertRequest.onload = checkInsertedItem;
+
+// Get info for the collection
+GetInfoRequest.open('get', '/getCollectionInfo');
+GetInfoRequest.send();
 
 // OWASP : Except for alphanumeric characters, escape all characters with ASCII values less than 256 with the &#xHH; format (or a named entity if available) to prevent switching out of the attribute.
 const OWASPescape = (str) => {
@@ -52,14 +92,13 @@ const insertItem = (apirequest) => {
 itemForm.onsubmit = function(event) {
 	// stop our form submission from refreshing the page
 	event.preventDefault();
-
+	console.log("new item submitted");
 	// get item value and add it to the list
 	var item1 = {};
-	item1.key1 = key1.value;
-	item1.key2 = key2.value;
 
-	// non, ça on ne devrait le faire qu'une fois la réponse validée !
-	//appendNewItem(item1);
+	properties.forEach( (item) => {
+		item1[item] = itemForm.elements[item].value;
+	});
 
 	var apisecret = secret.value;
 
@@ -71,9 +110,9 @@ itemForm.onsubmit = function(event) {
 	insertItem(apirequest);
 
 	// reset form
-	key1.value = '';
-	key1.focus();
-	key2.value = '';
+	properties.forEach( (item) => {
+		itemForm.elements[item].value = '';
+	});
 	secret.value = '';
 };
 
