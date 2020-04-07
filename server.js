@@ -18,13 +18,18 @@ dotenv.config();
 // DB as JSON file
 var fs = require('fs');
 
-//API KEY
+// From .env file
 const SECRET = process.env.SECRET;
+const COLLECTION_NAME = process.env.COLLECTION_NAME;
+const COLLECTION_PROPERTIES = process.env.COLLECTION_PROPERTIES;
+
+// array of property names for the collection
+const collection_props = JSON.parse(COLLECTION_PROPERTIES);
 
 // array of objects (items)
 var items = [];
 
-var dbFile = 'items.json';
+var dbFile = 'items.json';	// TODO customize
 
 // Functions
 const saveToDbFile = () => {
@@ -89,6 +94,15 @@ app.get('/insert', (request, response) => {
 // endpoint to get all the items in the database
 app.get('/getItems', (request, response) => {
 	response.send(JSON.stringify(items));
+});
+
+// endpoint to get collection's details
+app.get('/getCollectionInfo', (request, response) => {
+	var collection = {};
+	collection.name = COLLECTION_NAME;
+	collection.properties = collection_props;
+
+	response.send(JSON.stringify(collection));
 });
 
 // endpoint to insert an item into the database
