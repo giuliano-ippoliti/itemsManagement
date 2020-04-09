@@ -1,8 +1,6 @@
 // server.js
 // where your node app starts
 
-// init project
-
 // Express web framework for Node.js: https://expressjs.com/
 // express is a function
 var express = require('express');
@@ -36,8 +34,6 @@ const saveToDbFile = () => {
 	// converting to JSON for storing in db file
 	var initJsonStr = JSON.stringify(items, null, '  ');
 
-	//console.log(initJsonStr);
-
 	fs.writeFile(dbFile, initJsonStr, function(err) {
 		if (err) {
 			console.log(err);
@@ -47,14 +43,8 @@ const saveToDbFile = () => {
 
 // Loading items
 var exists = fs.existsSync(dbFile);
-if (!exists) {
-	// initializing with a first item
-	items.push({key1: "first key", key2: "Giuliano"});
 
-	// store in db file
-	saveToDbFile();
-}
-else {
+if (exists) {
 	console.log('Database file is ready to go!');
 
 	// read db file for storage in items
@@ -70,9 +60,6 @@ else {
 var app = express();
 
 // Express Middlewares
-
-// parse URL-encoded forme
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // parse JSON
 app.use(bodyParser.json());
