@@ -9,7 +9,7 @@ git clone https://github.com/giuliano-ippoliti/itemsManagement.git
 
 npm install
 
-Set variables in .env file (PORT, SECRET) 
+Set variables in .env file (PORT, SECRET, COLLECTION_NAME, COLLECTION_PROPERTIES) 
 
 npm start
 
