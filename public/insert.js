@@ -79,11 +79,6 @@ InsertRequest.onload = checkInsertedItem;
 GetInfoRequest.open('get', '/getCollectionInfo');
 GetInfoRequest.send();
 
-// OWASP : Except for alphanumeric characters, escape all characters with ASCII values less than 256 with the &#xHH; format (or a named entity if available) to prevent switching out of the attribute.
-const OWASPescape = (str) => {
-	return str.replace(/[%*+,-/;<=>^|]/g, '-');
-} 
-
 // function that inserts an item into the database file
 const insertItem = (apirequest) => {
 	const url = '/insertItems';

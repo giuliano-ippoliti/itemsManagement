@@ -47,6 +47,18 @@ const OWASPescape = (str) => {
 	return str.replace(/[%*+,-/;<=>^|]/g, '-');
 } 
 
+function escapeHtml(text) {
+	var map = {
+		'&': '&amp;',
+		'<': '&lt;',
+		'>': '&gt;',
+		'"': '&quot;',
+		"'": '&#039;'
+	};
+ 
+	return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
 // a helper function that displays a new item
 const appendNewItem = (item) => {
 	const newDiv = document.createElement('div');
@@ -80,8 +92,8 @@ const JSON2HTMLtext = (item) => {
 	for (x in item) {
 		// beware of XSS!
 		// https://www.owasp.org/index.php/XSS_(Cross_Site_Scripting)_Prevention_Cheat_Sheet
-		//txt += "<tr><td>" + OWASPescape(x) + "</td><td>" + OWASPescape(item[x]) + "</td></tr>";
-		txt += "<b>" + x + "</b>: " + item[x] + "<br>";
+		txt += "<b>" + escapeHtml(x) + "</b>: " + escapeHtml(item[x]) + "<br>";
+		//txt += "<b>" + x + "</b>: " + item[x] + "<br>";
 	}
 	txt += "<br>" ;
 	return txt;
